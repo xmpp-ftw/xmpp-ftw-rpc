@@ -291,7 +291,7 @@ describe('Rpc', function() {
             )
         })
 
-    it('Can handle nested arrays', function(done) {
+        it('Can handle nested arrays', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction',
@@ -332,6 +332,37 @@ describe('Rpc', function() {
                 function() {}
             )
         })
+
+        it('Badly formatted complex parameters return error', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'array',
+                        value: true
+                    }
+                ]
+            }
+            xmpp.once('stanza', function() {
+                done('Unexpected outgoing stanza')
+            })
+            var callback = function(error, data) {
+                should.not.exist(data)
+                error.type.should.equal('modify')
+                error.condition.should.equal('client-error')
+                error.description.should.equal('Parameter formatting error')
+                error.request.should.eql(request)
+                xmpp.removeAllListeners('stanza')
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
     })
     
 })
