@@ -685,6 +685,7 @@ describe('Rpc', function() {
                     resource: 'jrpc-client'
                 })
                 data.command.should.equal('example.performAction')
+                data.id.should.equal('1')
                 should.not.exist(data.params)
                 done()
             })
@@ -700,6 +701,7 @@ describe('Rpc', function() {
                     resource: 'jrpc-client'
                 })
                 data.command.should.equal('example.performAction')
+                data.id.should.equal('1')
                 data.params.length.should.equal(7)
                 
                 data.params[0].should.eql({ type: 'i4', value: 1 })
@@ -724,6 +726,7 @@ describe('Rpc', function() {
                     resource: 'jrpc-client'
                 })
                 data.command.should.equal('example.performAction')
+                data.id.should.equal('1')
                 data.params.length.should.equal(1)
                 data.params[0].type.should.equal('array')
                 data.params[0].value.length.should.equal(2)
@@ -744,6 +747,7 @@ describe('Rpc', function() {
                     user: 'requester',
                     resource: 'jrpc-client'
                 })
+                data.id.should.equal('1')
                 data.command.should.equal('example.performAction')
                 data.params.length.should.equal(1)
                 data.params[0].type.should.equal('array')
@@ -763,6 +767,7 @@ describe('Rpc', function() {
                     resource: 'jrpc-client'
                 })
                 data.command.should.equal('example.performAction')
+                data.id.should.equal('1')
                 data.params.length.should.equal(1)
                 data.params.should.eql([
                     {
@@ -785,6 +790,7 @@ describe('Rpc', function() {
                     user: 'requester',
                     resource: 'jrpc-client'
                 })
+                data.id.should.equal('1')
                 data.command.should.equal('example.performAction')
                 data.params.length.should.equal(1)
                 data.params.should.eql([
