@@ -517,4 +517,55 @@ describe('Rpc', function() {
         
     })
     
+    describe('Handle incoming RPC packets', function() {
+        
+        it('Can handle empty params', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-no-params'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.should.eql([])
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+        it('Can handle simple params', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-simple-params'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.length.should.equal(7)
+                data[0].should.eql({ type: 'i4', value: 1 })
+                data[1].should.eql({ type: 'int', value: 1 })
+                data[2].should.eql({ type: 'string', value: 'stringValue' })
+                data[3].should.eql({ type: 'double', value: 1234.2 })
+                data[4].should.eql({ type: 'base64', value: 'base64' })
+                data[5].should.eql({ type: 'boolean', value: true })
+                data[6].should.eql({ type: 'dateTime.iso8601', value: 'datetimeValue' })
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+    })
+    
 })

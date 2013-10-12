@@ -1,0 +1,8 @@
+<iq type="result" 
+    from="responder@company-a.com/jrpc-server" 
+    to="requester@company-b.com/jrpc-client" 
+    id="1">
+  <query xmlns="jabber:iq:rpc">
+    <methodResponse/>
+  </query>
+</iq>
