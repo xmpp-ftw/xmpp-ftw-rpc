@@ -613,7 +613,6 @@ describe('Rpc', function() {
             )
         })
 
-
        it('Can handle structs', function(done) {
             var request = {
                 to: 'rpc.server.com',
@@ -624,8 +623,15 @@ describe('Rpc', function() {
             })
             var callback = function(error, data) {
                 should.not.exist(error)
-                data.length.should.equal(1)
-                console.log(data)
+                data.should.eql([
+                    {
+                        type: 'struct',
+                        value: [
+                            { type: 'string', value: 'one', name: 'PageNumber' },
+                            { type: 'int', value: 2, name: 'RPP' }
+                        ]
+                    }
+                ])
                 done()
             }
             socket.emit(
@@ -645,8 +651,18 @@ describe('Rpc', function() {
             })
             var callback = function(error, data) {
                 should.not.exist(error)
-                data.length.should.equal(1)
-                console.log(data)
+                data.should.eql([
+                    {
+                        type: 'struct',
+                        value: [{
+                            type: 'struct',
+                            value: [
+                                { type: 'int', value: 2, name: 'PageNumber' }
+                            ],
+                            name: 'Paging'
+                        }]
+                    }
+                ])
                 done()
             }
             socket.emit(
