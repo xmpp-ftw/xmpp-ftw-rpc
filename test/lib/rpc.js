@@ -38,7 +38,7 @@ describe('Rpc', function() {
             rpc.handles(helper.getStanza('rpc-set')).should.be.true
         })
         
-        it('Returns true for RPC calls', function() { 
+        it('Returns true for RPC calls', function() {
             rpc.handles(ltx.parse('<iq/>')).should.be.false
         })
         
@@ -520,10 +520,6 @@ describe('Rpc', function() {
             )
         })
         
-    })
-    
-    describe('Handle incoming RPC packets', function() {
-        
         it('Can handle empty params', function(done) {
             var request = {
                 to: 'rpc.server.com',
@@ -571,6 +567,97 @@ describe('Rpc', function() {
             )
         })
         
+       it('Can handle arrays', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-array'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.length.should.equal(1)
+                data[0].type.should.equal('array')
+                data[0].value.length.should.equal(2)
+                data[0].value[0].should.eql({ type: 'string', value: 'one' })
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+       it('Can handle nested arrays', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-array-nested'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.length.should.equal(1)
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+
+
+       it('Can handle structs', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-struct'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.length.should.equal(1)
+                console.log(data)
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+       it('Can handle nested structs', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-result-struct-nested'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.length.should.equal(1)
+                console.log(data)
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+       
+        
+    })
+    
+    describe('Handle incoming RPC packets', function() {
+
     })
     
 })
