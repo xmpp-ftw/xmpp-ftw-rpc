@@ -188,6 +188,31 @@ describe('Rpc', function() {
                 callback
             )
         })
+        
+        it('Errors if any param doesn\'t have a value', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [{ type: 'int' }]
+            }
+            xmpp.once('stanza', function() {
+                done('Unexpected outgoing stanza')
+            })
+            var callback = function(error, success) {
+                should.not.exist(success)
+                error.type.should.equal('modify')
+                error.condition.should.equal('client-error')
+                error.description.should.equal('\'param\' must have \'value\' key')
+                error.request.should.eql(request)
+                xmpp.removeAllListeners('stanza')
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
             
         
         
