@@ -251,7 +251,87 @@ describe('Rpc', function() {
                 function() {}
             )
         })
-        
+            
+        it('Sends expected stanza with array param type', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'array',
+                        value: [
+                            { type: 'string', value: 'one' },
+                            { type: 'int', value: 2 }
+                        ]
+                    }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.id.should.exist
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.type.should.equal('set')
+                var methodCall = stanza.getChild('query', rpc.NS)
+                    .getChild('methodCall')
+                methodCall.should.exist
+                var params = methodCall.getChild('params')
+                params.should.exist
+                var param = params.getChild('param')
+                var data = param.getChild('value').getChild('array').getChildren('data')
+                data.length.should.equal(2)
+                
+                data[0].getChildText('string').should.equal('one')
+                data[1].getChildText('int').should.equal('2')
+                done()
+            })
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                function() {}
+            )
+        })
+
+    it('Can handle nested arrays', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'array',
+                        value: [{ 
+                            type: 'array', 
+                            value: [
+                                { type: 'int', value: 2 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.id.should.exist
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.type.should.equal('set')
+                var methodCall = stanza.getChild('query', rpc.NS)
+                    .getChild('methodCall')
+                methodCall.should.exist
+                var params = methodCall.getChild('params')
+                params.should.exist
+                var param = params.getChild('param')
+                var data = param.getChild('value').getChild('array').getChild('data')
+                data.should.exist
+                var childArray = data.getChild('array')
+                var childData = childArray.getChild('data')
+                childData.getChildText('int')
+                    .should.equal('2')
+                done()
+            })
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                function() {}
+            )
+        })
     })
     
 })
