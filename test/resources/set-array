@@ -1,0 +1,22 @@
+<iq type="set" 
+    from="requester@company-a.com/jrpc-client" 
+    to="responder@company-b.com/jrpc-server" 
+    id="1">
+  <query xmlns="jabber:iq:rpc">
+    <methodCall>
+      <methodName>example.performAction</methodName>
+      <params>
+        <param>
+          <value>
+            <array>
+              <data>
+                <value><string>one</string></value>
+	            <value><int>2</int></value>
+              </data>
+            </array>
+          </value>
+        </param>
+      </params>
+    </methodCall>
+  </query>
+</iq>

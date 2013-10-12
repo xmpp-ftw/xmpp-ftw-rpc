@@ -1,0 +1,10 @@
+<iq type="set" 
+    from="requester@company-a.com/jrpc-client" 
+    to="responder@company-b.com/jrpc-server" 
+    id="1">
+  <query xmlns="jabber:iq:rpc">
+    <methodCall>
+      <methodName>example.performAction</methodName>
+    </methodCall>
+  </query>
+</iq>
