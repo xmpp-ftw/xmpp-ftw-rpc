@@ -486,4 +486,30 @@ describe('Rpc', function() {
         
     })
     
+    describe('RPC responses', function() {
+        
+        it('Can handle error responses', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction'
+            }
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('rpc-error'))
+            })
+            var callback = function(error, data) {
+                should.not.exist(data)
+                error.type.should.equal('auth')
+                error.condition.should.equal('forbidden')
+                xmpp.removeAllListeners('stanza')
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+    })
+    
 })

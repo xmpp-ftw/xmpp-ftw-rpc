@@ -1,0 +1,18 @@
+<iq type="error" 
+    from="responder@company-a.com/jrpc-server" 
+    to="requester@company-b.com/jrpc-client" 
+    id="1">
+  <query xmlns="jabber:iq:rpc">
+    <methodCall>
+      <methodName>examples.getStateName</methodName>
+      <params>
+        <param>
+          <value><i4>6</i4></value>
+        </param>
+      </params>
+    </methodCall>
+  </query>
+  <error code="403" type="auth">
+    <forbidden xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"/>
+  </error>
+</iq>
