@@ -1,0 +1,21 @@
+<iq type="result" id="2789a:7" from="rpc.server.com">
+  <query xmlns="jabber:iq:rpc">
+    <methodResponse>
+      <params>
+        <param>
+          <value>
+            <array>
+              <data>
+                <array>
+                  <data>
+                    <int>2</int>
+                  </data>
+                </array>
+              </data>
+            </array>
+          </value>
+        </param>
+      </params>
+    </methodResponse>
+  </query>
+</iq>
