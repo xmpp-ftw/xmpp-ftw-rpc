@@ -34,7 +34,11 @@ describe('Rpc', function() {
 
     describe('Handles', function() {
         
-        it('Returns false for any stanza', function() {
+        it('Returns false by default', function() {
+            rpc.handles(helper.getStanza('rpc-set')).should.be.true
+        })
+        
+        it('Returns true for RPC calls', function() { 
             rpc.handles(ltx.parse('<iq/>')).should.be.false
         })
         

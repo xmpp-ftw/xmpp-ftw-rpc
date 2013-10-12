@@ -1,0 +1,15 @@
+<iq type="set" 
+    from="requester@company-b.com/jrpc-client" 
+    to="responder@company-a.com/jrpc-server" 
+    id="1">
+  <query xmlns="jabber:iq:rpc">
+    <methodCall>
+      <methodName>examples.getStateName</methodName>
+      <params>
+        <param>
+          <value><i4>6</i4></value>
+        </param>
+      </params>
+    </methodCall>
+  </query>
+</iq>
