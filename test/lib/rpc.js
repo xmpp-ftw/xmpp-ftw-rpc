@@ -214,7 +214,43 @@ describe('Rpc', function() {
             )
         })
             
-        
+        it('Sends expected stanza with basic param types', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    { type: 'i4', value: 'i4value' },
+                    { type: 'int', value: 'intvalue' },
+                    { type: 'string', value: 'stringvalue' },
+                    { type: 'double', value: 'double' },
+                    { type: 'base64', value: '34332354f3fve2' },
+                    { type: 'dateTime.iso8601', value: '2013-10-01Z10:10:10T' }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.id.should.exist
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.type.should.equal('set')
+                var methodCall = stanza.getChild('query', rpc.NS)
+                    .getChild('methodCall')
+                methodCall.should.exist
+                var paramsParent = methodCall.getChild('params')
+                paramsParent.should.exist
+                var params = paramsParent.getChildren('param')
+                params.length.should.equal(6)
+                for (var i = 0; i < 6; ++i)    
+                    params[i].getChild('value')
+                        .getChildText(request.params[i].type)
+                        .should.equal(request.params[i].value)
+                done()
+            })
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                function() {}
+            )
+        })
         
     })
     
