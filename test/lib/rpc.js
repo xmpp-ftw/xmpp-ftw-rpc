@@ -333,13 +333,134 @@ describe('Rpc', function() {
             )
         })
 
-        it('Badly formatted complex parameters return error', function(done) {
+        it('Badly formatted array parameter return error', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction',
                 params: [
                     {
                         type: 'array',
+                        value: true
+                    }
+                ]
+            }
+            xmpp.once('stanza', function() {
+                done('Unexpected outgoing stanza')
+            })
+            var callback = function(error, data) {
+                should.not.exist(data)
+                error.type.should.equal('modify')
+                error.condition.should.equal('client-error')
+                error.description.should.equal('Parameter formatting error')
+                error.request.should.eql(request)
+                xmpp.removeAllListeners('stanza')
+                done()
+            }
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                callback
+            )
+        })
+        
+       it('Sends expected stanza with struct param type', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'struct',
+                        value: [
+                            { type: 'string', value: 'one', name: 'PageNumber' },
+                            { type: 'int', value: 2, name: 'RPP' }
+                        ]
+                    }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.id.should.exist
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.type.should.equal('set')
+                var methodCall = stanza.getChild('query', rpc.NS)
+                    .getChild('methodCall')
+                methodCall.should.exist
+                var params = methodCall.getChild('params')
+                params.should.exist
+                var param = params.getChild('param')
+                var members = param.getChild('value')
+                    .getChild('struct')
+                    .getChildren('member')
+                members.length.should.equal(2)
+                
+                members[0].getChildText('name').should.equal('PageNumber')
+                members[0].getChild('value').getChildText('string').should.equal('one')
+                
+                members[1].getChildText('name').should.equal('RPP')
+                members[1].getChild('value').getChildText('int').should.equal('2')
+                done()
+            })
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                function() {}
+            )
+        })
+
+        it('Can handle nested structs', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'struct',
+                        value: [{ 
+                            type: 'struct', 
+                            value: [
+                                { type: 'int', value: 2, name: 'PageNumber' }
+                            ],
+                            name: 'Paging'
+                        }]
+                    }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.id.should.exist
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.type.should.equal('set')
+                var methodCall = stanza.getChild('query', rpc.NS)
+                    .getChild('methodCall')
+                methodCall.should.exist
+                var params = methodCall.getChild('params')
+                params.should.exist
+                var param = params.getChild('param')
+                var member = param.getChild('value')
+                    .getChild('struct')
+                    .getChild('member')
+                member.should.exist
+                member.getChildText('name').should.equal('Paging')
+                var childStruct = member.getChild('value').getChild('struct')
+                var childMember = childStruct.getChild('member')
+                childMember.getChildText('name').should.equal('PageNumber')
+                childMember.getChild('value').getChildText('int')
+                    .should.equal('2')
+                done()
+            })
+            socket.emit(
+                'xmpp.rpc.perform',
+                request,
+                function() {}
+            )
+        })
+
+        it('Badly formatted struct parameter return error', function(done) {
+            var request = {
+                to: 'rpc.server.com',
+                method: 'example.performAction',
+                params: [
+                    {
+                        type: 'struct',
                         value: true
                     }
                 ]
