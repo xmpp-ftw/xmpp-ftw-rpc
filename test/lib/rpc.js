@@ -228,6 +228,7 @@ describe('Rpc', function() {
                     { type: 'string', value: 'stringvalue' },
                     { type: 'double', value: 'double' },
                     { type: 'base64', value: '34332354f3fve2' },
+                    { type: 'boolean', value: true },
                     { type: 'dateTime.iso8601', value: '2013-10-01Z10:10:10T' }
                 ]
             }
@@ -242,8 +243,8 @@ describe('Rpc', function() {
                 var paramsParent = methodCall.getChild('params')
                 paramsParent.should.exist
                 var params = paramsParent.getChildren('param')
-                params.length.should.equal(6)
-                for (var i = 0; i < 6; ++i)
+                params.length.should.equal(request.params.length)
+                for (var i = 0; i < request.params.length; ++i)
                     params[i].getChild('value')
                         .getChildText(request.params[i].type)
                         .should.equal(request.params[i].value)
