@@ -672,11 +672,137 @@ describe('Rpc', function() {
             )
         })
        
-        
     })
     
     describe('Handle incoming RPC packets', function() {
 
+        it('Can handle simple incoming RPC request', function(done) {
+            
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                should.not.exist(data.params)
+                done()
+            })
+            rpc.handle(helper.getStanza('set-no-params'))
+        })
+        
+        it('Can handle incoming request with simple params', function(done) {
+            
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                data.params.length.should.equal(7)
+                
+                data.params[0].should.eql({ type: 'i4', value: 1 })
+                data.params[1].should.eql({ type: 'int', value: 1 })
+                data.params[2].should.eql({ type: 'string', value: 'stringValue' })
+                data.params[3].should.eql({ type: 'double', value: 1234.2 })
+                data.params[4].should.eql({ type: 'base64', value: 'base64' })
+                data.params[5].should.eql({ type: 'boolean', value: true })
+                data.params[6].should.eql({
+                    type: 'dateTime.iso8601', value: 'datetimeValue'
+                })
+                done()
+            })
+            rpc.handle(helper.getStanza('set-simple-parameters'))
+        })
+        
+        it('Can handle incoming request with arrays', function(done) {
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                data.params.length.should.equal(1)
+                data.params[0].type.should.equal('array')
+                data.params[0].value.length.should.equal(2)
+                data.params[0].value[0].should.eql({
+                    type: 'string', value: 'one'
+                })
+                data.params[0].value[1]
+                    .should.eql({ type: 'int', value: 2 })
+                done()
+            })
+            rpc.handle(helper.getStanza('set-array'))
+        })
+        
+        it('Can handle incoming requests with nested arrays', function(done) {
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                data.params.length.should.equal(1)
+                data.params[0].type.should.equal('array')
+                data.params[0].value.length.should.equal(1)
+                data.params[0].value[0].value
+                    .should.eql([{ type: 'int', value: 2 }])
+                done()
+            })
+            rpc.handle(helper.getStanza('set-array-nested'))
+        })
+        
+        it('Can handle incoming requests with structs', function(done) {
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                data.params.length.should.equal(1)
+                data.params.should.eql([
+                    {
+                        type: 'struct',
+                        value: [
+                            { type: 'string', value: 'one', name: 'PageNumber' },
+                            { type: 'int', value: 2, name: 'RPP' }
+                        ]
+                    }
+                ])
+                done()
+            })
+            rpc.handle(helper.getStanza('set-struct'))
+        })
+        
+        it('Can handle incoming requests with nested structs', function(done) {
+            socket.once('xmpp.rpc.request', function(data) {
+                data.from.should.eql({
+                    domain: 'company-a.com',
+                    user: 'requester',
+                    resource: 'jrpc-client'
+                })
+                data.command.should.equal('example.performAction')
+                data.params.length.should.equal(1)
+                data.params.should.eql([
+                    {
+                        type: 'struct',
+                        value: [{
+                            type: 'struct',
+                            value: [
+                                { type: 'int', value: 2, name: 'PageNumber' }
+                            ],
+                            name: 'Paging'
+                        }]
+                    }
+                ])
+                done()
+            })
+            rpc.handle(helper.getStanza('set-struct-nested'))
+        })
     })
     
 })
