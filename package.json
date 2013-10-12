@@ -15,7 +15,9 @@
   },
   "keywords": [
     "rpc",
-    "xep-0084",
+    "jabber-rpc",
+    "remote procedure call",
+    "xep-0009",
     "json",
     "xmpp",
     "xml",
