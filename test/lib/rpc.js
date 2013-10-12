@@ -282,7 +282,9 @@ describe('Rpc', function() {
                 var params = methodCall.getChild('params')
                 params.should.exist
                 var param = params.getChild('param')
-                var data = param.getChild('value').getChild('array').getChildren('data')
+                var data = param.getChild('value').getChild('array')
+                    .getChild('data')
+                    .getChildren('value')
                 data.length.should.equal(2)
                 
                 data[0].getChildText('string').should.equal('one')
@@ -323,10 +325,13 @@ describe('Rpc', function() {
                 var params = methodCall.getChild('params')
                 params.should.exist
                 var param = params.getChild('param')
-                var data = param.getChild('value').getChild('array').getChild('data')
+                var data = param.getChild('value')
+                    .getChild('array')
+                    .getChild('data')
+                    .getChild('value')
                 data.should.exist
                 var childArray = data.getChild('array')
-                var childData = childArray.getChild('data')
+                var childData = childArray.getChild('data').getChild('value')
                 childData.getChildText('int')
                     .should.equal('2')
                 done()

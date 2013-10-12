@@ -6,10 +6,8 @@
           <value>
             <array>
               <data>
-                <string>one</string>
-              </data>
-              <data>
-                <int>2</int>
+                <value><string>one</string></value>
+	            <value><int>2</int></value>
               </data>
             </array>
           </value>

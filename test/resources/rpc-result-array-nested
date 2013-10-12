@@ -6,11 +6,13 @@
           <value>
             <array>
               <data>
-                <array>
-                  <data>
-                    <int>2</int>
-                  </data>
-                </array>
+                <value>
+                  <array>
+                    <data>
+                      <value><int>2</int></value>
+                    </data>
+                  </array>
+                </value>
               </data>
             </array>
           </value>
