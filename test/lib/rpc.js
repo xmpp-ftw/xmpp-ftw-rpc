@@ -239,7 +239,7 @@ describe('Rpc', function() {
                 paramsParent.should.exist
                 var params = paramsParent.getChildren('param')
                 params.length.should.equal(6)
-                for (var i = 0; i < 6; ++i)    
+                for (var i = 0; i < 6; ++i)
                     params[i].getChild('value')
                         .getChildText(request.params[i].type)
                         .should.equal(request.params[i].value)
@@ -298,8 +298,8 @@ describe('Rpc', function() {
                 params: [
                     {
                         type: 'array',
-                        value: [{ 
-                            type: 'array', 
+                        value: [{
+                            type: 'array',
                             value: [
                                 { type: 'int', value: 2 }
                             ]
@@ -414,8 +414,8 @@ describe('Rpc', function() {
                 params: [
                     {
                         type: 'struct',
-                        value: [{ 
-                            type: 'struct', 
+                        value: [{
+                            type: 'struct',
                             value: [
                                 { type: 'int', value: 2, name: 'PageNumber' }
                             ],
