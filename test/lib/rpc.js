@@ -601,6 +601,9 @@ describe('Rpc', function() {
             var callback = function(error, data) {
                 should.not.exist(error)
                 data.length.should.equal(1)
+                data[0].type.should.equal('array')
+                data[0].value.length.should.equal(1)
+                data[0].value[0].value.should.eql([{ type: 'int', value: 2 }])
                 done()
             }
             socket.emit(
