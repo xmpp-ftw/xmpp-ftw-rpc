@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/lloydwatkin/xmpp-ftw-rpc.git"
+    "url": "git://github.com/xmpp-ftw/xmpp-ftw-rpc.git"
   },
   "keywords": [
     "rpc",
@@ -27,7 +27,7 @@
   "license": "Apache 2.0",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/lloydwatkin/xmpp-ftw-rpc/issues"
+    "url": "https://github.com/xmpp-ftw/xmpp-ftw-rpc/issues"
   },
   "dependencies": {
     "ltx": "*"
