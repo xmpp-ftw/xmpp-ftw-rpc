@@ -24,3 +24,7 @@ npm i --save xmpp-ftw-rpc
 ```
 npm test
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/xmpp-ftw/xmpp-ftw-rpc/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
