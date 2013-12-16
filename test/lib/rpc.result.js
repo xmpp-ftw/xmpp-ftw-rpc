@@ -1,5 +1,5 @@
 var should = require('should')
-  , Rpc = require('../../lib/rpc')
+  , Rpc = require('../../index')
   , ltx    = require('ltx')
   , helper = require('../helper')
 
@@ -33,7 +33,7 @@ describe('Rpc', function() {
     })
 
     describe('Can send RPC results', function() {
-            
+
         it('Errors if no \'to\' key provided', function(done) {
             var request = {}
             xmpp.once('stanza', function() {
@@ -54,7 +54,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-        
+
         it('Errors if no \'id\' key provided', function(done) {
             var request = {
                 to: 'requester@server.com/desktop'
@@ -77,7 +77,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-        
+
         it('Sends expected stanza with no params', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -91,7 +91,7 @@ describe('Rpc', function() {
                 var query = stanza.getChild('query', rpc.NS)
                 query.getChild('methodResponse').should.exist
                 query.should.exist
-                
+
                 done()
             })
             socket.emit(
@@ -100,7 +100,7 @@ describe('Rpc', function() {
                 function() {}
             )
         })
-                
+
         it('Errors if \'params\' is not an array', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -125,7 +125,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-            
+
         it('Errors if any param doesn\'t have type', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -150,7 +150,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-        
+
         it('Errors if any param doesn\'t have a value', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -175,7 +175,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-            
+
         it('Sends expected stanza with basic param types', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -214,7 +214,7 @@ describe('Rpc', function() {
                 function() {}
             )
         })
-            
+
         it('Sends expected stanza with array param type', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -244,7 +244,7 @@ describe('Rpc', function() {
                     .getChild('data')
                     .getChildren('value')
                 data.length.should.equal(2)
-                
+
                 data[0].getChildText('string').should.equal('one')
                 data[1].getChildText('int').should.equal('2')
                 done()
@@ -330,7 +330,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-        
+
        it('Sends expected stanza with struct param type', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
@@ -360,11 +360,11 @@ describe('Rpc', function() {
                     .getChild('struct')
                     .getChildren('member')
                 members.length.should.equal(2)
-                
+
                 members[0].getChildText('name').should.equal('PageNumber')
                 members[0].getChild('value').getChildText('string')
                     .should.equal('one')
-                
+
                 members[1].getChildText('name').should.equal('RPP')
                 members[1].getChild('value').getChildText('int').should.equal('2')
                 done()
@@ -452,7 +452,7 @@ describe('Rpc', function() {
                 callback
             )
         })
-        
+
     })
-    
+
 })
