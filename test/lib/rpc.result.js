@@ -1,6 +1,9 @@
+'use strict';
+
+/* jshint -W030 */
+
 var should = require('should')
   , Rpc = require('../../index')
-  , ltx    = require('ltx')
   , helper = require('../helper')
 
 describe('Rpc', function() {
@@ -331,7 +334,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Sends expected stanza with struct param type', function(done) {
+        it('Sends expected stanza with struct param type', function(done) {
             var request = {
                 to: 'requester@server.com/desktop',
                 id: '123',

@@ -1,3 +1,7 @@
+'use strict';
+
+/* jshint -W030 */
+
 var should = require('should')
   , Rpc = require('../../index')
   , ltx    = require('ltx')
@@ -373,7 +377,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Sends expected stanza with struct param type', function(done) {
+        it('Sends expected stanza with struct param type', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction',
@@ -567,7 +571,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Can handle arrays', function(done) {
+        it('Can handle arrays', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction'
@@ -590,7 +594,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Can handle nested arrays', function(done) {
+        it('Can handle nested arrays', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction'
@@ -613,7 +617,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Can handle structs', function(done) {
+        it('Can handle structs', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction'
@@ -641,7 +645,7 @@ describe('Rpc', function() {
             )
         })
 
-       it('Can handle nested structs', function(done) {
+        it('Can handle nested structs', function(done) {
             var request = {
                 to: 'rpc.server.com',
                 method: 'example.performAction'
@@ -711,7 +715,8 @@ describe('Rpc', function() {
                 data.params[4].should.eql({ type: 'base64', value: 'base64' })
                 data.params[5].should.eql({ type: 'boolean', value: true })
                 data.params[6].should.eql({
-                    type: 'dateTime.iso8601', value: 'datetimeValue'
+                    type: 'dateTime.iso8601',
+                    value: 'datetimeValue'
                 })
                 done()
             })
@@ -731,7 +736,8 @@ describe('Rpc', function() {
                 data.params[0].type.should.equal('array')
                 data.params[0].value.length.should.equal(2)
                 data.params[0].value[0].should.eql({
-                    type: 'string', value: 'one'
+                    type: 'string',
+                    value: 'one'
                 })
                 data.params[0].value[1]
                     .should.eql({ type: 'int', value: 2 })
