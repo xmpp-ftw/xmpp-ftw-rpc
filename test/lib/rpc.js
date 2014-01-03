@@ -12,8 +12,8 @@ describe('Rpc', function() {
     var rpc, socket, xmpp, manager
 
     before(function() {
-        socket = new helper.Eventer()
-        xmpp = new helper.Eventer()
+        socket = new helper.SocketEventer()
+        xmpp = new helper.XmppEventer()
         manager = {
             socket: socket,
             client: xmpp,
@@ -33,6 +33,12 @@ describe('Rpc', function() {
             }
         }
         rpc = new Rpc()
+        rpc.init(manager)
+    })
+
+    beforeEach(function() {
+        socket.removeAllListeners()
+        xmpp.removeAllListeners()
         rpc.init(manager)
     })
 
@@ -62,7 +68,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.rpc.perform', {})
+            socket.send('xmpp.rpc.perform', {})
         })
 
         it('Errors if non-functional callback provided', function(done) {
@@ -77,7 +83,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.rpc.perform', {}, true)
+            socket.send('xmpp.rpc.perform', {}, true)
         })
 
         it('Errors if no \'to\' key provided', function(done) {
@@ -94,7 +100,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -117,7 +123,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -140,7 +146,7 @@ describe('Rpc', function() {
                     .should.equal(request.method)
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -165,7 +171,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -190,7 +196,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -215,7 +221,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -254,7 +260,7 @@ describe('Rpc', function() {
                         .should.equal(request.params[i].value)
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -295,7 +301,7 @@ describe('Rpc', function() {
                 data[1].getChildText('int').should.equal('2')
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -340,7 +346,7 @@ describe('Rpc', function() {
                     .should.equal('2')
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -370,7 +376,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -414,7 +420,7 @@ describe('Rpc', function() {
                 members[1].getChild('value').getChildText('int').should.equal('2')
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -461,7 +467,7 @@ describe('Rpc', function() {
                     .should.equal('2')
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 function() {}
@@ -491,7 +497,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -517,7 +523,7 @@ describe('Rpc', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -537,7 +543,7 @@ describe('Rpc', function() {
                 data.should.eql([])
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -564,7 +570,7 @@ describe('Rpc', function() {
                 data[6].should.eql({ type: 'dateTime.iso8601', value: 'datetimeValue' })
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -587,7 +593,7 @@ describe('Rpc', function() {
                 data[0].value[0].should.eql({ type: 'string', value: 'one' })
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -610,7 +616,7 @@ describe('Rpc', function() {
                 data[0].value[0].value.should.eql([{ type: 'int', value: 2 }])
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -638,7 +644,7 @@ describe('Rpc', function() {
                 ])
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
@@ -669,7 +675,7 @@ describe('Rpc', function() {
                 ])
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.rpc.perform',
                 request,
                 callback
