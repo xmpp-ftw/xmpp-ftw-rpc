@@ -18,6 +18,8 @@ describe('Rpc', function() {
             socket: socket,
             client: xmpp,
             trackId: function(id, callback) {
+                if (typeof id !== 'object')
+                    throw new Error('Stanza ID spoofing not implemented!')
                 this.callback = callback
             },
             makeCallback: function(error, data) {
