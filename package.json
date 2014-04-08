@@ -1,6 +1,6 @@
 {
   "name": "xmpp-ftw-rpc",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Jabber-RPC (XEP-0009) plugin for XMPP-FTW",
   "main": "index.js",
   "directories": {
