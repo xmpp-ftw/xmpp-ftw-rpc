@@ -30,19 +30,19 @@
     "url": "https://github.com/xmpp-ftw/xmpp-ftw-rpc/issues"
   },
   "dependencies": {
-    "ltx": "0.x",
+    "ltx": "2.0.2",
     "xmpp-ftw": "1.x"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
     "grunt": "~0.4.2",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "~0.7.2",
-    "grunt-mocha-cli": "~1.7.0",
-    "grunt-mocha-istanbul": "^2.2.0",
-    "istanbul": "^0.3.5",
-    "mocha": "~1.18.0",
-    "should": "~1.2.2",
+    "grunt-contrib-jshint": "~0.11.3",
+    "grunt-mocha-cli": "~2.0.0",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "istanbul": "^0.4.0",
+    "mocha": "~2.3.3",
+    "should": "~7.1.1",
     "xmpp-ftw": "1.x"
   },
   "peerDependencies": {
