@@ -30,7 +30,7 @@
     "url": "https://github.com/xmpp-ftw/xmpp-ftw-rpc/issues"
   },
   "dependencies": {
-    "ltx": "0.x",
+    "ltx": "2.5.0",
     "xmpp-ftw": "1.x"
   },
   "devDependencies": {
