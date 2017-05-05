@@ -1,6 +1,8 @@
 xmpp-ftw-rpc
 =================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/xmpp-ftw/xmpp-ftw-rpc.svg)](https://greenkeeper.io/)
+
 Jabber RPC (XEP-0009) plugin for XMPP-FTW.
 
 https://github.com/xmpp-ftw/xmpp-ftw.git
